@@ -890,8 +890,8 @@ function getIdentifier() {
 }
 
 // Output the image string to the textfield
-// eslint-disable-next-line no-unused-vars
-function generateOutputString() {
+// eslint-disable-next-line no-unused-vars /////////////////////////////////////////////////////////////////////////////////////
+/*function generateOutputString() {  /////////////// old code ////////////////////////////
   let outputString = '';
   let code = '';
 
@@ -1024,6 +1024,104 @@ function generateOutputString() {
   document.getElementById('code-output').value = outputString;
   document.getElementById('copy-button').disabled = false;
 }
+*/
+
+function generateOutputString() {
+  let outputString = 'start#';  // Add start# at the beginning
+  let code = '';
+
+  switch (settings.outputFormat) {
+    case 'arduino': {
+      const varQuickArray = [];
+      let bytesUsed = 0;
+      // --
+      images.each((image) => {
+        code = imageToString(image);
+
+        // Trim whitespace from end and remove trailing comma
+        code = code.replace(/,\s*$/, '');
+
+        code = `${code.split('\n').join('')}`;
+        bytesUsed += code.split('\n').length * 16; // 16 bytes per line.
+
+        const varname = getIdentifier() + image.glyph.replace(/[^a-zA-Z0-9]/g, '_');
+        varQuickArray.push(varname);
+        code = `const ${getImageType()} ${varname} [] PROGMEM = {${code}};`;
+        outputString += code;
+      });
+
+      varQuickArray.sort();
+      outputString += `//Arrayofallbitmapsforconvenience.(TotalbytesusedtostoreimagesinPROGMEM=${bytesUsed})`;
+      outputString += `const int ${getIdentifier()}allArray_LEN=${varQuickArray.length};`;
+      outputString += `const ${getImageType()}* ${getIdentifier()}allArray[${varQuickArray.length}]={${varQuickArray.join(',')}};`;
+      break;
+    }
+
+    case 'arduino_single': {
+      images.each((image) => {
+        code = imageToString(image);
+        code = `${code.split('\n').join('')}`;
+        outputString += code;
+      });
+
+      outputString = outputString.replace(/,\s*$/, '');
+
+      outputString = `const ${getImageType()} ${getIdentifier()} [] PROGMEM = {${outputString}};`;
+      break;
+    }
+
+    case 'adafruit_gfx': { // bitmap
+      let useGlyphs = 0;
+      images.each((image) => {
+        code = imageToString(image);
+        code = `${code.split('\n').join('')}`;
+        outputString += code;
+        if (image.glyph.length === 1) {
+          useGlyphs++;
+        }
+      });
+
+      outputString = outputString.replace(/,\s*$/, '');
+      outputString = `const unsigned char ${getIdentifier()}Bitmap [] PROGMEM = {${outputString}};const GFXbitmapGlyph ${getIdentifier()}Glyphs [] PROGMEM = {`;
+
+      let firstAschiiChar = document.getElementById('first-ascii-char').value;
+      const xAdvance = parseInt(document.getElementById('x-advance').value);
+      let offset = 0;
+      code = '';
+
+      // GFXbitmapGlyph
+      images.each((image) => {
+        code += `{${offset},${image.canvas.width},${image.canvas.height},${xAdvance},'${images.length() === useGlyphs ? image.glyph : String.fromCharCode(firstAschiiChar++)}'}`;
+        if (image !== images.last()) {
+          code += ',';
+        }
+        offset += image.canvas.width;
+      });
+      code += '};';
+      outputString += code;
+
+      // GFXbitmapFont
+      outputString += `const GFXbitmapFont ${getIdentifier()}Font PROGMEM = {(uint8_t *)${getIdentifier()}Bitmap,(GFXbitmapGlyph *)${getIdentifier()}Glyphs,${images.length()}};`;
+      break;
+    }
+    default: { // plain
+      images.each((image) => {
+        code = imageToString(image);
+        if (image.img !== images.first().img) {
+          outputString += `\n`;
+        }
+        outputString += code;
+      });
+      // Trim whitespace from end and remove trailing comma
+      outputString = outputString.replace(/,\s*$/g, '');
+    }
+  }
+
+  outputString += '#end';  // Add #end at the end
+  document.getElementById('code-output').value = outputString.replace(/\s+/g, '');  // Remove all spaces
+  document.getElementById('copy-button').disabled = false;
+}
+
 
 // Copy the final output to the clipboard
 // eslint-disable-next-line no-unused-vars
