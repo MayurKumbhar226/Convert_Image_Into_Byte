@@ -1027,7 +1027,7 @@ function getIdentifier() {
 */
 
 function generateOutputString() {
-  let outputString = 'start#';  // Add start# at the beginning
+  let outputString = 'start#b';  // Add start#b at the beginning
   let code = '';
 
   switch (settings.outputFormat) {
@@ -1046,14 +1046,14 @@ function generateOutputString() {
 
         const varname = getIdentifier() + image.glyph.replace(/[^a-zA-Z0-9]/g, '_');
         varQuickArray.push(varname);
-        code = `const ${getImageType()} ${varname} [] PROGMEM = {${code}};`;
+        code = `const${getImageType()}${varname}[]PROGMEM={${code}};`;
         outputString += code;
       });
 
       varQuickArray.sort();
       outputString += `//Arrayofallbitmapsforconvenience.(TotalbytesusedtostoreimagesinPROGMEM=${bytesUsed})`;
-      outputString += `const int ${getIdentifier()}allArray_LEN=${varQuickArray.length};`;
-      outputString += `const ${getImageType()}* ${getIdentifier()}allArray[${varQuickArray.length}]={${varQuickArray.join(',')}};`;
+      outputString += `constint${getIdentifier()}allArray_LEN=${varQuickArray.length};`;
+      outputString += `const${getImageType()}*${getIdentifier()}allArray[${varQuickArray.length}]=${varQuickArray.join(',')};`;
       break;
     }
 
@@ -1066,7 +1066,7 @@ function generateOutputString() {
 
       outputString = outputString.replace(/,\s*$/, '');
 
-      outputString = `const ${getImageType()} ${getIdentifier()} [] PROGMEM = {${outputString}};`;
+      outputString = `const${getImageType()}${getIdentifier()}[]PROGMEM={${outputString}};`;
       break;
     }
 
@@ -1082,7 +1082,7 @@ function generateOutputString() {
       });
 
       outputString = outputString.replace(/,\s*$/, '');
-      outputString = `const unsigned char ${getIdentifier()}Bitmap [] PROGMEM = {${outputString}};const GFXbitmapGlyph ${getIdentifier()}Glyphs [] PROGMEM = {`;
+      outputString = `constunsignedchar${getIdentifier()}Bitmap[]PROGMEM={${outputString}};constGFXbitmapGlyph${getIdentifier()}Glyphs[]PROGMEM={`;
 
       let firstAschiiChar = document.getElementById('first-ascii-char').value;
       const xAdvance = parseInt(document.getElementById('x-advance').value);
@@ -1101,15 +1101,12 @@ function generateOutputString() {
       outputString += code;
 
       // GFXbitmapFont
-      outputString += `const GFXbitmapFont ${getIdentifier()}Font PROGMEM = {(uint8_t *)${getIdentifier()}Bitmap,(GFXbitmapGlyph *)${getIdentifier()}Glyphs,${images.length()}};`;
+      outputString += `constGFXbitmapFont${getIdentifier()}FontPROGMEM={(uint8_t*)${getIdentifier()}Bitmap,(GFXbitmapGlyph*)${getIdentifier()}Glyphs,${images.length()}};`;
       break;
     }
     default: { // plain
       images.each((image) => {
         code = imageToString(image);
-        if (image.img !== images.first().img) {
-          outputString += `\n`;
-        }
         outputString += code;
       });
       // Trim whitespace from end and remove trailing comma
