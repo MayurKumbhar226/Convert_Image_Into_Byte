@@ -1212,22 +1212,3 @@ window.onload = () => {
   document.getElementById('outputFormat').value = 'arduino';
   document.getElementById('outputFormat').onchange();
 };
-
-
-
-document.addEventListener("DOMContentLoaded", function() {
-  var fileInput = document.getElementById('file-input');
-  fileInput.click(); // Trigger the file selection dialog
-});
-
-document.addEventListener("DOMContentLoaded", function() {
-  console.log("DOM Loaded. Attempting to click file input.");
-  var fileInput = document.getElementById('file-input');
-  if (fileInput) {
-      console.log("File input found. Attempting to click.");
-      fileInput.click(); // Trigger the file selection dialog
-  } else {
-      console.error("File input element not found.");
-  }
-});
-
