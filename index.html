@@ -14,13 +14,6 @@
   <script src="./js/dithering.js" defer></script>
   <script src="./js/script.js" defer></script>
   <link rel="stylesheet" href="./css/style.css">
-  <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      // Simulate click on file input to prompt file selection dialog
-      document.getElementById('file-input').click();
-    });
-  </script>
-  
 </head>
 <body>
   <div class="wrapper">
@@ -273,10 +266,24 @@
           <div class="table-row" id="remove-zeroes-commas-container">
             <div class="table-cell"><label>Extra formatting options:</label></div>
             <div class="table-cell">
-              <input id="removeZeroesCommas" type="checkbox" onchange="updateBoolean('removeZeroesCommas')"/>
+              <input id="removeZeroesCommas" type="checkbox" onchange="updateBoolean('removeZeroesCommas')" checked/>
               <label for="removeZeroesCommas">Remove '0x' and commas from output</label>
             </div>
           </div>
+          
+          <script>
+            window.onload = function() {
+              // Set default selection for output format
+              document.getElementById('outputFormat').value = 'plain';
+              
+              // Set default checked state for the checkbox
+              document.getElementById('removeZeroesCommas').checked = true;
+          
+              // Call updateBoolean to apply the checkbox change
+              updateBoolean('removeZeroesCommas');
+            };
+          </script>
+
         </div>
 
       </section>
