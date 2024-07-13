@@ -1209,6 +1209,7 @@ window.onload = () => {
   const fileInput = document.getElementById('file-input');
   fileInput.addEventListener('click', () => { this.value = null; }, false);
   fileInput.addEventListener('change', handleImageSelection, false);
-  document.getElementById('outputFormat').value = 'arduino';
+  document.getElementById('outputFormat').value = 'plain';
+
   document.getElementById('outputFormat').onchange();
 };
