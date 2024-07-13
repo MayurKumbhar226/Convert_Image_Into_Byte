@@ -14,7 +14,7 @@ const settings = {
   backgroundColor: 'white',
   scale: 1,
   drawMode: 'horizontal',
-  removeZeroesCommas: false,
+  removeZeroesCommas: true,
   ditheringThreshold: 128,
   ditheringMode: 0,
   outputFormat: 'plain',
