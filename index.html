@@ -26,8 +26,25 @@
       <section class="sub-section">
         <div class="column" id="file-input-column">
           <h2 class="sub-section-title">1. Select image</h2>
-          <input type="file" id="file-input" name="file-input" multiple/><br />
+          <input type="file" id="file-input" name="file-input" multiple style="display: none;" /><br />
+          <p id="file-input-message" style="display: none; color: green;">File input automatically clicked after 3 seconds.</p>
+          <div class="clicked-indicator" id="clicked-indicator">Clicked!</div>
         </div>
+      </section>
+    </section>
+
+    <script>
+     setTimeout(function() {
+        console.log('Timeout executed.'); // Check if this message appears in the console
+        var fileInput = document.getElementById('file-input');
+        if (fileInput) {
+          fileInput.click();
+          document.getElementById('file-input-message').style.display = 'block'; // Show the message
+          document.getElementById('clicked-indicator').style.display = 'block'; // Show clicked indicator
+        } else {
+          console.error('File input element not found.');
+        }
+      }, 3000);
 
 
 
