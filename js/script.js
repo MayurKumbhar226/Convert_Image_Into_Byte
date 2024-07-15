@@ -1152,9 +1152,6 @@ function copyOutput() {
   // Clean up
   window.URL.revokeObjectURL(url);
   document.body.removeChild(a);
-
-  // Show a confirmation message
-  alert('Text copied to clipboard and downloaded as output.txt');
 }
 
 
