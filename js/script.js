@@ -1122,27 +1122,23 @@ function generateOutputString() {
 
 // Copy the final output to the clipboard
 // eslint-disable-next-line no-unused-vars
-function copyOutput() {
-  // Get the output text
-  const outputText = document.getElementById('code-output').value;
+function copyOutputToClipboard() {
+    var outputText = document.getElementById('code-output').value;
 
-  // Create a blob containing the text
-  const blob = new Blob([outputText], { type: 'text/plain' });
+    // Create a temporary textarea element
+    var textarea = document.createElement('textarea');
+    textarea.value = outputText;
+    document.body.appendChild(textarea);
 
-  // Create a temporary link element to trigger the download
-  const a = document.createElement('a');
-  const url = URL.createObjectURL(blob);
-  a.href = url;
-  a.download = 'output.txt'; // Filename
-  a.style.display = 'none';
-  document.body.appendChild(a);
+    // Select the text and copy to clipboard
+    textarea.select();
+    document.execCommand('copy');
 
-  // Trigger the download
-  a.click();
+    // Clean up
+    document.body.removeChild(textarea);
 
-  // Clean up
-  window.URL.revokeObjectURL(url);
-  document.body.removeChild(a);
+    // Optionally, display a confirmation message
+    alert("Text copied to clipboard");
 }
 
 
