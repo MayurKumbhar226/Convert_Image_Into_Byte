@@ -1126,15 +1126,6 @@ function copyOutput() {
   // Get the output text
   const outputText = document.getElementById('code-output').value;
 
-  // Copy to clipboard
-  navigator.clipboard.writeText(outputText)
-    .then(() => {
-      console.log('Text copied to clipboard');
-    })
-    .catch(err => {
-      console.error('Unable to copy text to clipboard:', err);
-    });
-
   // Create a blob containing the text
   const blob = new Blob([outputText], { type: 'text/plain' });
 
@@ -1153,6 +1144,7 @@ function copyOutput() {
   window.URL.revokeObjectURL(url);
   document.body.removeChild(a);
 }
+
 
 
 // eslint-disable-next-line no-unused-vars
