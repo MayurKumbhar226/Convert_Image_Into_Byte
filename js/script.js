@@ -1123,8 +1123,40 @@ function generateOutputString() {
 // Copy the final output to the clipboard
 // eslint-disable-next-line no-unused-vars
 function copyOutput() {
-  navigator.clipboard.writeText(document.getElementById('code-output').value);
+  // Get the output text
+  const outputText = document.getElementById('code-output').value;
+
+  // Copy to clipboard
+  navigator.clipboard.writeText(outputText)
+    .then(() => {
+      console.log('Text copied to clipboard');
+    })
+    .catch(err => {
+      console.error('Unable to copy text to clipboard:', err);
+    });
+
+  // Create a blob containing the text
+  const blob = new Blob([outputText], { type: 'text/plain' });
+
+  // Create a temporary link element to trigger the download
+  const a = document.createElement('a');
+  const url = URL.createObjectURL(blob);
+  a.href = url;
+  a.download = 'output.txt'; // Filename
+  a.style.display = 'none';
+  document.body.appendChild(a);
+
+  // Trigger the download
+  a.click();
+
+  // Clean up
+  window.URL.revokeObjectURL(url);
+  document.body.removeChild(a);
+
+  // Show a confirmation message
+  alert('Text copied to clipboard and downloaded as output.txt');
 }
+
 
 // eslint-disable-next-line no-unused-vars
 function downloadBinFile() {
