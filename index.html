@@ -16,6 +16,33 @@
   <link rel="stylesheet" href="./css/style.css">
 </head>
 <body>
+
+  <!--/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+   <textarea id="code-output" rows="10" cols="30"></textarea>
+    <button onclick="copyOutputToClipboardAndSave()">Copy Output and Save</button>
+
+    <script>
+        function copyOutputToClipboardAndSave() {
+            var outputText = document.getElementById('code-output').value;
+
+            // Copy to clipboard
+            var textarea = document.createElement('textarea');
+            textarea.value = outputText;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+
+            // Call Android interface to save the text
+            if (window.Android && window.Android.saveTextToFile) {
+                window.Android.saveTextToFile(outputText);
+            }
+        }
+    </script>
+
+    <!--/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->
+
+  
   <div class="wrapper">
     <section style="display:none;" class="section">
       <h1>Convert Image Into Byte</h1>  
