@@ -1003,37 +1003,28 @@ function copyOutput() {
 // eslint-disable-next-line no-unused-vars
 // eslint-disable-next-line no-unused-vars
 function downloadBinFile() {
-  let raw = [];
-  images.each((image) => {
-    const imageData = imageToString(image);
-    console.log("Image Data:", imageData); // Log the raw image data
+    // Get the textarea content
+    var text = document.getElementById('code-output').value;
 
-    const data = imageData
-      .split(',')
-      .map((s) => s.trim())
-      .filter(Boolean)
-      .map((byte) => parseInt(byte, 16));
-    raw = raw.concat(data);
-  });
-  
-  // Debugging: Log raw data
-  console.log("Raw data array:", raw);
+    // Convert the text to binary data
+    var blob = new Blob([text], { type: 'application/octet-stream' });
 
-  if (raw.length === 0) {
-    alert("No data to download. Ensure images are loaded and processed correctly.");
-    return;
-  }
+    // Create a link element
+    var a = document.createElement('a');
+    a.style.display = 'none';
+    document.body.appendChild(a);
 
-  const data = new Uint8Array(raw);
-  const a = document.createElement('a');
-  a.style = 'display: none';
-  document.body.appendChild(a);
-  const blob = new Blob([data], { type: 'octet/stream' });
-  const url = window.URL.createObjectURL(blob);
-  a.href = url;
-  a.download = `${getIdentifier()}.bin`;
-  a.click();
-  window.URL.revokeObjectURL(url);
+    // Set the href and download attributes of the link
+    var url = window.URL.createObjectURL(blob);
+    a.href = url;
+    a.download = 'output.bin';
+
+    // Trigger the click event of the link
+    a.click();
+
+    // Clean up
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
 }
 
 // eslint-disable-next-line no-unused-vars
