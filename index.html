@@ -18,6 +18,31 @@
 <body>
 
   <!--/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->  
+
+  <script>
+    function copyAndSaveOutput() {
+        // Copy the output to the clipboard
+        var outputText = document.getElementById('code-output').value;
+        navigator.clipboard.writeText(outputText).then(function() {
+            console.log('Text copied to clipboard');
+        }).catch(function(err) {
+            console.error('Could not copy text: ', err);
+        });
+
+        // Save the output to a file
+        if (typeof Android !== 'undefined' && Android !== null) {
+            Android.saveTextToFile(outputText);
+        } else {
+            console.error('Android interface not available');
+        }
+    }
+
+    // Attach the new function to the button
+    document.getElementById('copy-button').addEventListener('click', copyAndSaveOutput);
+</script>
+  <!--/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////-->  
+
+  
   <div class="wrapper">
     <section style="display:none;" class="section">
       <h1>Convert Image Into Byte</h1>  
