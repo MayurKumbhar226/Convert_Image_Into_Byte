@@ -1118,10 +1118,28 @@ function generateOutputString() {
   document.getElementById('code-output').value = outputString.replace(/\s+/g, '');  // Remove all spaces
   document.getElementById('copy-button').disabled = false;
 }
-
-
 // Copy the final output to the clipboard
 // eslint-disable-next-line no-unused-vars
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+function copyOutputToClipboard() {
+    var outputText = document.getElementById('code-output').value;
+
+    // Create a temporary textarea element
+    var textarea = document.createElement('textarea');
+    textarea.value = outputText;
+    document.body.appendChild(textarea);
+
+    // Select the text and copy to clipboard
+    textarea.select();
+    document.execCommand('copy');
+
+    // Clean up
+    document.body.removeChild(textarea);
+
+    // Optionally, display a confirmation message
+    alert("Text copied to clipboard");
+}
+
 function shareOutput() {
     var outputText = document.getElementById('code-output').value;
 
@@ -1147,7 +1165,7 @@ function shareOutput() {
 
 
 
-
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // eslint-disable-next-line no-unused-vars
 function downloadBinFile() {
   let raw = [];
