@@ -1123,7 +1123,7 @@ function generateOutputString() {
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-/*function copyOutput() {
+function copyOutput() {
     // Get the output text to copy
     var outputText = document.getElementById('code-output').value;
 
@@ -1138,12 +1138,12 @@ function generateOutputString() {
         .catch(function(err) {
             console.error('Could not copy text: ', err);
         });
-}*/
-function copyOutput() {
+}
+/*function copyOutput() {
     var outputText = document.getElementById('code-output').value;
     Android.copyOutputToGallery(outputText);
     alert('Text copied to gallery');
-}
+}*/
 
 
 
