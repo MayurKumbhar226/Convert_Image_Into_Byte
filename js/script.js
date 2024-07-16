@@ -1122,21 +1122,24 @@ function generateOutputString() {
 // eslint-disable-next-line no-unused-vars
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-function copyOutputToClipboard() {
+
+function copyOutput() {
+    // Get the output text to copy
     var outputText = document.getElementById('code-output').value;
 
-    // Create a temporary textarea element
-    var textarea = document.createElement('textarea');
-    textarea.value = outputText;
-    document.body.appendChild(textarea);
+    // Copy text to clipboard
+    navigator.clipboard.writeText(outputText)
+        .then(function() {
+            console.log('Text copied to clipboard');
 
-    // Select the text and copy to clipboard
-    textarea.select();
-    document.execCommand('copy');
-
-    // Clean up
-    document.body.removeChild(textarea);
+            // Send copied text to Android for saving to file
+            Android.saveTextToFile('SAVE_TEXT:' + outputText);
+        })
+        .catch(function(err) {
+            console.error('Could not copy text: ', err);
+        });
 }
+
 
 
 
