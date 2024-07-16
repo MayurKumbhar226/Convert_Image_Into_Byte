@@ -1142,27 +1142,6 @@ function copyOutputToClipboard() {
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // eslint-disable-next-line no-unused-vars
-function downloadBinFile() {
-  let raw = [];
-  images.each((image) => {
-    const data = imageToString(image)
-      .split(',')
-      .map((s) => s.trim())
-      .filter(Boolean)
-      .map((byte) => parseInt(byte, 16));
-    raw = raw.concat(data);
-  });
-  const data = new Uint8Array(raw);
-  const a = document.createElement('a');
-  a.style = 'display: none';
-  document.body.appendChild(a);
-  const blob = new Blob([data], { type: 'octet/stream' });
-  const url = window.URL.createObjectURL(blob);
-  a.href = url;
-  a.download = `${getIdentifier()}.bin`;
-  a.click();
-  window.URL.revokeObjectURL(url);
-}
 
 // eslint-disable-next-line no-unused-vars
 function updateDrawMode(elm) {
