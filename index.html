@@ -18,38 +18,32 @@
 <body>
   <div class="wrapper">
     <section class="section">
-      <h1>Convert Image Into Byte</h1>
-      
+      <h1>Convert Image Into Byte</h1>  
     </section>
-
     <section class="section bottom-divider">
       <section class="sub-section">
         <div class="column" id="file-input-column">
           <h2 class="sub-section-title">1. Select image</h2>
-          <input type="file" id="file-input" name="file-input" multiple/><br />
+          <input type="file" id="file-input" name="file-input" multiple style="display: none;" /><br />
+          <p id="file-input-message" style="display: none; color: green;">File input automatically clicked after 3 seconds.</p>
+          <div class="clicked-indicator" id="clicked-indicator">Clicked!</div>
         </div>
-
-
-
-      <!-- <div class="column column-center">
-          <h2 class="sub-section-title">or</h2>
-        </div>
-        <div class="column column-right">
-          <h2 class="sub-section-title">1. Paste byte array</h2>
-          <textarea id="byte-input" class="byte-input"></textarea><br />
-          <div class="text-input-size">
-            <input type="number" min="0" id="text-input-width" class="size-input" value="128" /> x
-            <input type="number" min="0" id="text-input-height" class="size-input" value="64" /> px
-          </div>
-          <div>
-            <button onclick="handleTextInput('horizontal')">Read as horizontal</button>
-            <button onclick="handleTextInput('vertical')">Read as vertical</button>
-          </div>
-          <div class="note">Read images appear at step 3 below</div>
-        </div> -->
       </section>
     </section>
 
+    <script>
+     setTimeout(function() {
+        console.log('Timeout executed.'); // Check if this message appears in the console
+        var fileInput = document.getElementById('file-input');
+        if (fileInput) {
+          fileInput.click();
+          document.getElementById('file-input-message').style.display = 'block'; // Show the message
+          document.getElementById('clicked-indicator').style.display = 'block'; // Show clicked indicator
+        } else {
+          console.error('File input element not found.');
+        }
+      }, 3000);
+    </script>
     <section class="section bottom-divider">
       <h2>2. Image Settings</h2>
       <section class="sub-section">
@@ -266,10 +260,24 @@
           <div class="table-row" id="remove-zeroes-commas-container">
             <div class="table-cell"><label>Extra formatting options:</label></div>
             <div class="table-cell">
-              <input id="removeZeroesCommas" type="checkbox" onchange="updateBoolean('removeZeroesCommas')"/>
+              <input id="removeZeroesCommas" type="checkbox" onchange="updateBoolean('removeZeroesCommas')" checked/>
               <label for="removeZeroesCommas">Remove '0x' and commas from output</label>
             </div>
           </div>
+          
+          <script>
+            window.onload = function() {
+              // Set default selection for output format
+              document.getElementById('outputFormat').value = 'plain';
+              
+              // Set default checked state for the checkbox
+              document.getElementById('removeZeroesCommas').checked = true;
+          
+              // Call updateBoolean to apply the checkbox change
+              updateBoolean('removeZeroesCommas');
+            };
+          </script>
+
         </div>
 
       </section>
@@ -285,5 +293,3 @@
 
 </body>
 </html>
-
-automatically click the "Choose files" button with the id "file-input" when the page loads
