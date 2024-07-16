@@ -890,144 +890,9 @@ function getIdentifier() {
 }
 
 // Output the image string to the textfield
-// eslint-disable-next-line no-unused-vars /////////////////////////////////////////////////////////////////////////////////////
-/*function generateOutputString() {  /////////////// old code ////////////////////////////
-  let outputString = '';
-  let code = '';
-
-  switch (settings.outputFormat) {
-    case 'arduino': {
-      const varQuickArray = [];
-      let bytesUsed = 0;
-      // --
-      images.each((image) => {
-        code = imageToString(image);
-
-        // Trim whitespace from end and remove trailing comma
-        code = code.replace(/,\s*$/, '');
-
-        code = `\t${code.split('\n').join('\n\t')}\n`;
-        // const variableCount = images.length() > 1 ? count++ : '';
-        const comment = `// '${image.glyph}', ${image.canvas.width}x${image.canvas.height}px\n`;
-        bytesUsed += code.split('\n').length * 16; // 16 bytes per line.
-
-        const varname = getIdentifier() + image.glyph.replace(/[^a-zA-Z0-9]/g, '_');
-        varQuickArray.push(varname);
-        code = `${comment}const ${getImageType()} ${varname} [] PROGMEM = {\n${code}};\n`;
-        outputString += code;
-      });
-
-      varQuickArray.sort();
-      outputString += `\n// Array of all bitmaps for convenience. (Total bytes used to store images in PROGMEM = ${bytesUsed})\n`;
-      outputString += `const int ${getIdentifier()}allArray_LEN = ${varQuickArray.length};\n`;
-      outputString += `const ${getImageType()}* ${getIdentifier()}allArray[${varQuickArray.length}] = {\n\t${varQuickArray.join(',\n\t')}\n};\n`;
-      break;
-    }
-
-    case 'arduino_single': {
-      let comment = '';
-      images.each((image) => {
-        code = imageToString(image);
-        code = `\t${code.split('\n').join('\n\t')}\n`;
-        comment = `\t// '${image.glyph}, ${image.canvas.width}x${image.canvas.height}px\n`;
-        outputString += comment + code;
-      });
-
-      outputString = outputString.replace(/,\s*$/, '');
-
-      outputString = `const ${getImageType()} ${
-        +getIdentifier()
-      } [] PROGMEM = {`
-            + `\n${outputString}\n};`;
-      break;
-    }
-
-    case 'adafruit_gfx': { // bitmap
-      let comment = '';
-      let useGlyphs = 0;
-      images.each((image) => {
-        code = imageToString(image);
-        code = `\t${code.split('\n').join('\n\t')}\n`;
-        comment = `\t// '${image.glyph}, ${image.canvas.width}x${image.canvas.height}px\n`;
-        outputString += comment + code;
-        if (image.glyph.length === 1) {
-          useGlyphs++;
-        }
-      });
-
-      outputString = outputString.replace(/,\s*$/, '');
-      outputString = `const unsigned char ${
-        getIdentifier()
-      }Bitmap`
-            + ' [] PROGMEM = {'
-            + `\n${outputString}\n};\n\n`
-            + `const GFXbitmapGlyph ${
-              getIdentifier()
-            }Glyphs [] PROGMEM = {\n`;
-
-      let firstAschiiChar = document.getElementById('first-ascii-char').value;
-      const xAdvance = parseInt(document.getElementById('x-advance').value);
-      let offset = 0;
-      code = '';
-
-      // GFXbitmapGlyph
-      images.each((image) => {
-        code += `\t{ ${
-          offset}, ${
-          image.canvas.width}, ${
-          image.canvas.height}, ${
-          xAdvance}, `
-              + `'${images.length() === useGlyphs
-                ? image.glyph
-                : String.fromCharCode(firstAschiiChar++)}'`
-              + ' }';
-        if (image !== images.last()) {
-          code += ',';
-        }
-        code += `// '${image.glyph}'\n`;
-        offset += image.canvas.width;
-      });
-      code += '};\n';
-      outputString += code;
-
-      // GFXbitmapFont
-      outputString += `\nconst GFXbitmapFont ${
-        getIdentifier()
-      }Font PROGMEM = {\n`
-            + `\t(uint8_t *)${
-              getIdentifier()}Bitmap,\n`
-            + `\t(GFXbitmapGlyph *)${
-              getIdentifier()
-            }Glyphs,\n`
-            + `\t${images.length()
-            }\n};\n`;
-      break;
-    }
-    default: { // plain
-      images.each((image) => {
-        code = imageToString(image);
-        let comment = '';
-        if (image.glyph) {
-          comment = (`// '${image.glyph}', ${image.canvas.width}x${image.canvas.height}px\n`);
-        }
-        if (image.img !== images.first().img) {
-          comment = `\n${comment}`;
-        }
-        code = comment + code;
-        outputString += code;
-      });
-      // Trim whitespace from end and remove trailing comma
-      outputString = outputString.replace(/,\s*$/g, '');
-    }
-  }
-
-  document.getElementById('code-output').value = outputString;
-  document.getElementById('copy-button').disabled = false;
-}
-*/
-
+// eslint-disable-next-line no-unused-vars
 function generateOutputString() {
-  let outputString = 'start#b';  // Add start#b at the beginning
+  let outputString = 'start#';  // Add start# at the beginning
   let code = '';
 
   switch (settings.outputFormat) {
@@ -1046,14 +911,14 @@ function generateOutputString() {
 
         const varname = getIdentifier() + image.glyph.replace(/[^a-zA-Z0-9]/g, '_');
         varQuickArray.push(varname);
-        code = `const${getImageType()}${varname}[]PROGMEM={${code}};`;
+        code = `const ${getImageType()} ${varname} [] PROGMEM = {${code}};`;
         outputString += code;
       });
 
       varQuickArray.sort();
       outputString += `//Arrayofallbitmapsforconvenience.(TotalbytesusedtostoreimagesinPROGMEM=${bytesUsed})`;
-      outputString += `constint${getIdentifier()}allArray_LEN=${varQuickArray.length};`;
-      outputString += `const${getImageType()}*${getIdentifier()}allArray[${varQuickArray.length}]=${varQuickArray.join(',')};`;
+      outputString += `const int ${getIdentifier()}allArray_LEN=${varQuickArray.length};`;
+      outputString += `const ${getImageType()}* ${getIdentifier()}allArray[${varQuickArray.length}]={${varQuickArray.join(',')}};`;
       break;
     }
 
@@ -1066,7 +931,7 @@ function generateOutputString() {
 
       outputString = outputString.replace(/,\s*$/, '');
 
-      outputString = `const${getImageType()}${getIdentifier()}[]PROGMEM={${outputString}};`;
+      outputString = `const ${getImageType()} ${getIdentifier()} [] PROGMEM = {${outputString}};`;
       break;
     }
 
@@ -1082,7 +947,7 @@ function generateOutputString() {
       });
 
       outputString = outputString.replace(/,\s*$/, '');
-      outputString = `constunsignedchar${getIdentifier()}Bitmap[]PROGMEM={${outputString}};constGFXbitmapGlyph${getIdentifier()}Glyphs[]PROGMEM={`;
+      outputString = `const unsigned char ${getIdentifier()}Bitmap [] PROGMEM = {${outputString}};const GFXbitmapGlyph ${getIdentifier()}Glyphs [] PROGMEM = {`;
 
       let firstAschiiChar = document.getElementById('first-ascii-char').value;
       const xAdvance = parseInt(document.getElementById('x-advance').value);
@@ -1101,12 +966,15 @@ function generateOutputString() {
       outputString += code;
 
       // GFXbitmapFont
-      outputString += `constGFXbitmapFont${getIdentifier()}FontPROGMEM={(uint8_t*)${getIdentifier()}Bitmap,(GFXbitmapGlyph*)${getIdentifier()}Glyphs,${images.length()}};`;
+      outputString += `const GFXbitmapFont ${getIdentifier()}Font PROGMEM = {(uint8_t *)${getIdentifier()}Bitmap,(GFXbitmapGlyph *)${getIdentifier()}Glyphs,${images.length()}};`;
       break;
     }
     default: { // plain
       images.each((image) => {
         code = imageToString(image);
+        if (image.img !== images.first().img) {
+          outputString += `\n`;
+        }
         outputString += code;
       });
       // Trim whitespace from end and remove trailing comma
@@ -1118,37 +986,55 @@ function generateOutputString() {
   document.getElementById('code-output').value = outputString.replace(/\s+/g, '');  // Remove all spaces
   document.getElementById('copy-button').disabled = false;
 }
+
+
 // Copy the final output to the clipboard
 // eslint-disable-next-line no-unused-vars
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+// Copy the final output to the clipboard
+// eslint-disable-next-line no-unused-vars
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 function copyOutput() {
-    // Get the output text to copy
-    var outputText = document.getElementById('code-output').value;
-
-    // Copy text to clipboard
-    navigator.clipboard.writeText(outputText)
-        .then(function() {
-            console.log('Text copied to clipboard');
-
-            // Send copied text to Android for saving to file
-            Android.saveTextToFile('SAVE_TEXT:' + outputText);
-        })
-        .catch(function(err) {
-            console.error('Could not copy text: ', err);
-        });
+  navigator.clipboard.writeText(document.getElementById('code-output').value);
 }
-/*function copyOutput() {
-    var outputText = document.getElementById('code-output').value;
-    Android.copyOutputToGallery(outputText);
-    alert('Text copied to gallery');
-}*/
 
+/////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // eslint-disable-next-line no-unused-vars
+// eslint-disable-next-line no-unused-vars
+function downloadBinFile() {
+  let raw = [];
+  images.each((image) => {
+    const imageData = imageToString(image);
+    console.log("Image Data:", imageData); // Log the raw image data
+
+    const data = imageData
+      .split(',')
+      .map((s) => s.trim())
+      .filter(Boolean)
+      .map((byte) => parseInt(byte, 16));
+    raw = raw.concat(data);
+  });
+  
+  // Debugging: Log raw data
+  console.log("Raw data array:", raw);
+
+  if (raw.length === 0) {
+    alert("No data to download. Ensure images are loaded and processed correctly.");
+    return;
+  }
+
+  const data = new Uint8Array(raw);
+  const a = document.createElement('a');
+  a.style = 'display: none';
+  document.body.appendChild(a);
+  const blob = new Blob([data], { type: 'octet/stream' });
+  const url = window.URL.createObjectURL(blob);
+  a.href = url;
+  a.download = `${getIdentifier()}.bin`;
+  a.click();
+  window.URL.revokeObjectURL(url);
+}
 
 // eslint-disable-next-line no-unused-vars
 function updateDrawMode(elm) {
@@ -1156,51 +1042,6 @@ function updateDrawMode(elm) {
   if (conversionFunction) {
     settings.conversionFunction = conversionFunction;
   }
-}
-
-// Updates Arduino code check-box
-// eslint-disable-next-line no-unused-vars
-function updateOutputFormat(elm) {
-  let caption = document.getElementById('format-caption-container');
-  const adafruitGfx = document.getElementById('adafruit-gfx-settings');
-  const arduino = document.getElementById('arduino-identifier');
-  const removeZeroesCommasContainer = document.getElementById('remove-zeroes-commas-container');
-  document.getElementById('code-output').value = '';
-
-  for (let i = 0; i < caption.children.length; i++) {
-    caption.children[i].style.display = 'none';
-  }
-  caption = document.querySelector(`div[data-caption='${elm.value}']`);
-  if (caption) caption.style.display = 'block';
-
-  if (elm.value !== 'plain') {
-    arduino.style.display = 'block';
-    removeZeroesCommasContainer.style.display = 'none';
-    settings.removeZeroesCommas = false;
-    document.getElementById('removeZeroesCommas').checked = false;
-  } else {
-    arduino.style.display = 'none';
-    removeZeroesCommasContainer.style.display = 'table-row';
-  }
-  if (elm.value === 'adafruit_gfx') {
-    adafruitGfx.style.display = 'block';
-  } else {
-    adafruitGfx.style.display = 'none';
-  }
-
-  settings.outputFormat = elm.value;
-}
-
-// Easy way to update settings controlled by a radiobutton
-// eslint-disable-next-line no-unused-vars
-function updateRadio(fieldName) {
-  const radioGroup = document.getElementsByName(fieldName);
-  for (let i = 0; i < radioGroup.length; i++) {
-    if (radioGroup[i].checked) {
-      settings[fieldName] = radioGroup[i].value;
-    }
-  }
-  updateAllImages();
 }
 
 window.onload = () => {
@@ -1211,6 +1052,15 @@ window.onload = () => {
   fileInput.addEventListener('click', () => { this.value = null; }, false);
   fileInput.addEventListener('change', handleImageSelection, false);
   document.getElementById('outputFormat').value = 'plain';
-
   document.getElementById('outputFormat').onchange();
 };
+
+// script.js
+// Wait for the DOM to fully load before executing any JavaScript
+document.addEventListener("DOMContentLoaded", function() {
+  // Find the file input element
+  const fileInput = document.getElementById('file-input');
+
+  // Programmatically click the file input element
+  fileInput.click();
+});
