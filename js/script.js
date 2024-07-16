@@ -1140,28 +1140,6 @@ function copyOutputToClipboard() {
     alert("Text copied to clipboard");
 }
 
-function shareOutput() {
-    var outputText = document.getElementById('code-output').value;
-
-    // Create a temporary textarea element
-    var textarea = document.createElement('textarea');
-    textarea.value = outputText;
-    document.body.appendChild(textarea);
-
-    // Select the text
-    textarea.select();
-
-    // Open Android share intent
-    navigator.share({
-        title: 'Share Output',
-        text: outputText,
-    })
-    .then(() => console.log('Successful share'))
-    .catch((error) => console.log('Error sharing:', error));
-
-    // Clean up
-    document.body.removeChild(textarea);
-}
 
 
 
